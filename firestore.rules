@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /responses/{responseId} {
+      allow create: if isValidResponse();
+      allow read: if request.auth != null && request.auth.token.email == "REMPLACER_PAR_TON_EMAIL";
+      allow update, delete: if false;
+    }
+    match /{document=**} { allow read, write: if false; }
+    function isValidResponse() {
+      return request.resource.data.keys().hasOnly(["answers","scoreAverage","satisfactionPercent","source","questionCount","submittedAt","localSubmittedAt","appVersion"])
+      && request.resource.data.questionCount == 6
+      && request.resource.data.scoreAverage is number
+      && request.resource.data.satisfactionPercent is number
+      && request.resource.data.source in ["tablette", "qr"]
+      && request.resource.data.answers.keys().hasOnly(["accueil_visite","accueil_telephonique","temps_attente","confort_proprete","delai_resultats","satisfaction_globale"])
+      && request.resource.data.answers.accueil_visite is number && request.resource.data.answers.accueil_visite >= 1 && request.resource.data.answers.accueil_visite <= 5
+      && request.resource.data.answers.accueil_telephonique is number && request.resource.data.answers.accueil_telephonique >= 1 && request.resource.data.answers.accueil_telephonique <= 5
+      && request.resource.data.answers.temps_attente is number && request.resource.data.answers.temps_attente >= 1 && request.resource.data.answers.temps_attente <= 5
+      && request.resource.data.answers.confort_proprete is number && request.resource.data.answers.confort_proprete >= 1 && request.resource.data.answers.confort_proprete <= 5
+      && request.resource.data.answers.delai_resultats is number && request.resource.data.answers.delai_resultats >= 1 && request.resource.data.answers.delai_resultats <= 5
+      && request.resource.data.answers.satisfaction_globale is number && request.resource.data.answers.satisfaction_globale >= 1 && request.resource.data.answers.satisfaction_globale <= 5;
+    }
+  }
+}
