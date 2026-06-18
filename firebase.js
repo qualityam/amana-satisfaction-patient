@@ -1,5 +1,5 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyCSqiZkXV7XbaOM3sgy0LuQ2kvjeZaimgY",
+  apiKey: "AIzaSyCSqiZkXV7XbaOM3sgy0LuQ2kvjeZaimqY",
   authDomain: "amana-satisfaction-patient.firebaseapp.com",
   projectId: "amana-satisfaction-patient",
   storageBucket: "amana-satisfaction-patient.firebasestorage.app",
