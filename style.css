@@ -44,3 +44,78 @@
     padding: 18px;
   }
 }
+@media (max-height: 700px) and (orientation: landscape) {
+  .survey-card {
+    padding: 10px 26px 50px;
+  }
+
+  .survey-header {
+    height: 72px;
+  }
+
+  .header-logo {
+    width: 210px;
+    max-height: 70px;
+  }
+
+  .progress-zone p {
+    font-size: 20px;
+    margin: 3px 0;
+  }
+
+  .progress-bar {
+    height: 10px;
+  }
+
+  .question-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 28px;
+    margin-bottom: 4px;
+  }
+
+  .question-zone h1 {
+    font-size: 34px;
+  }
+
+  .question-zone h2 {
+    font-size: 25px;
+  }
+
+  .red-line {
+    height: 4px;
+    margin: 6px auto;
+  }
+
+  .emoji-grid {
+    margin-top: 18px;
+    gap: 12px;
+  }
+
+  .emoji-option {
+    min-height: 165px;
+    padding: 10px 6px;
+  }
+
+  .emoji {
+    font-size: 54px;
+    margin-bottom: 8px;
+  }
+
+  .label-ar {
+    font-size: 20px;
+  }
+
+  .label-fr {
+    font-size: 18px;
+  }
+
+  .instruction {
+    display: none;
+  }
+
+  .survey-footer {
+    font-size: 13px;
+    bottom: 10px;
+  }
+}
