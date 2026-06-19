@@ -76,3 +76,7 @@
     height:300px;
     position:relative;
 }
+#distributionChart{
+  width:100%;
+  height:350px !important;
+}
