@@ -527,6 +527,28 @@ qualityIndicator = qualityIndicator
   y += 10;
 
   doc.text(`${qualityGap}`, 20, y);
+  y += 20;
+
+const chartCanvas = document.getElementById("satisfactionChart");
+
+if (chartCanvas) {
+
+  const chartImage = chartCanvas.toDataURL("image/png");
+
+  doc.addPage();
+
+  doc.setFontSize(16);
+  doc.text("Graphique de satisfaction par question", 20, 20);
+
+  doc.addImage(
+    chartImage,
+    "PNG",
+    15,
+    30,
+    180,
+    90
+  );
+}
 y += 20;
 
 doc.setFontSize(14);
