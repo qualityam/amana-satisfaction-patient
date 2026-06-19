@@ -90,3 +90,11 @@
   width:100% !important;
   height:100% !important;
 }
+#qualityTarget{
+  color:#0b3b91;
+}
+
+#qualityGap{
+  font-weight:700;
+  margin-top:8px;
+}
