@@ -488,7 +488,7 @@ function renderMonthlyTrend() {
   if (!trendElement || !textElement) return;
 
   if (previousCount === 0) {
-    trendElement.textContent = currentCount;
+    trendElement.textContent = `${currentCount} réponses`;
     textElement.textContent = "Premier mois de suivi";
     return;
   }
