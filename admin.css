@@ -103,3 +103,13 @@
   font-size: 32px !important;
   line-height: 1.2;
 }
+#positiveHighlights ul{
+  margin:0;
+  padding-left:20px;
+}
+
+#positiveHighlights li{
+  margin:10px 0;
+  font-weight:700;
+  color:var(--blue-dark);
+}
