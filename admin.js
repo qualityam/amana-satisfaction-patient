@@ -583,11 +583,8 @@ if (chartCanvas) {
       100
     );
   }
-
-  doc.save(
-    `Rapport_Qualite_AMANA_${new Date().toISOString().slice(0,10)}.pdf`
-  );
-y += 20;
+doc.addPage();
+y = 20;
 
 doc.setFontSize(14);
 doc.text("Conclusion", 20, y);
