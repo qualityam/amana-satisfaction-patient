@@ -474,8 +474,14 @@ async function generatePdfReport() {
   const averageScore =
     document.getElementById("averageScore").textContent;
 
-  const qualityIndicator =
-    document.getElementById("qualityIndicator").textContent;
+  let qualityIndicator =
+  document.getElementById("qualityIndicator").textContent;
+
+qualityIndicator = qualityIndicator
+  .replace("🟢","")
+  .replace("🟠","")
+  .replace("🔴","")
+  .trim();
 
   const bestQuestion =
     document.getElementById("bestQuestion").textContent;
