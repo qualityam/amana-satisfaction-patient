@@ -98,3 +98,8 @@
   font-weight:700;
   margin-top:8px;
 }
+#bestQuestion,
+#weakQuestion{
+  font-size: 32px !important;
+  line-height: 1.2;
+}
