@@ -549,6 +549,30 @@ if (chartCanvas) {
     90
   );
 }
+    const distributionCanvas = document.getElementById("distributionChart");
+
+  if (distributionCanvas) {
+
+    const distributionImage = distributionCanvas.toDataURL("image/png");
+
+    doc.addPage();
+
+    doc.setFontSize(16);
+    doc.text("Répartition des réponses", 20, 20);
+
+    doc.addImage(
+      distributionImage,
+      "PNG",
+      35,
+      35,
+      140,
+      100
+    );
+  }
+
+  doc.save(
+    `Rapport_Qualite_AMANA_${new Date().toISOString().slice(0,10)}.pdf`
+  );
 y += 20;
 
 doc.setFontSize(14);
