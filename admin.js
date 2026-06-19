@@ -18,6 +18,7 @@ const questionsLabels = {
 
 let allResponses = [];
 let filteredResponses = [];
+let satisfactionChart = null;
 const loginBox = document.getElementById("loginBox");
 const dashboard = document.getElementById("dashboard");
 const loginError = document.getElementById("loginError");
@@ -112,8 +113,9 @@ function renderStats() {
     };
   });
 
-  renderBestAndWeakPoints(questionStats);
-  renderQuestionBars(questionStats);
+renderBestAndWeakPoints(questionStats);
+renderQuestionBars(questionStats);
+renderChart(questionStats);
 }
 
 function renderQualityIndicator(percent) {
@@ -241,4 +243,39 @@ function resetDateFilter() {
 
   filteredResponses = allResponses;
   renderStats();
+}
+function renderChart(stats) {
+
+  const ctx = document.getElementById("satisfactionChart");
+
+  if (!ctx) return;
+
+  const labels = Object.values(stats).map(item => item.label);
+  const values = Object.values(stats).map(item => item.percent);
+
+  if (satisfactionChart) {
+    satisfactionChart.destroy();
+  }
+
+  satisfactionChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Satisfaction (%)",
+        data: values,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100
+        }
+      }
+    }
+  });
 }
