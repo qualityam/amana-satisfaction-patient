@@ -508,8 +508,12 @@ qualityIndicator = qualityIndicator
 doc.setFillColor(8, 47, 115);
 doc.rect(0, 0, 210, 35, "F");
 
+// Fond blanc derrière le logo
+doc.setFillColor(255, 255, 255);
+doc.roundedRect(8, 3, 58, 30, 3, 3, "F");
+
 try {
-  doc.addImage(logo, "PNG", 10, 4, 55, 28);
+  doc.addImage(logo, "PNG", 10, 4, 54, 26);
 } catch (e) {
   console.warn("Logo non chargé", e);
 }
