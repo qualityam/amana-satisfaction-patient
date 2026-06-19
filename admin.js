@@ -537,7 +537,7 @@ y += 10;
 const conclusion = `
 Le taux de satisfaction global est de ${globalSatisfaction}.
 
-L'objectif qualité fixé à ≥ 90% ${
+L'objectif qualité fixé à 90% ou plus ${
   parseInt(globalSatisfaction) >= 90
     ? "est atteint."
     : "n'est pas atteint."
