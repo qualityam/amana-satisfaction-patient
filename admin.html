@@ -93,6 +93,13 @@
   </div>
 </div>
       <section class="panel">
+  <div class="panel-header">
+    <h2>Graphique de satisfaction</h2>
+  </div>
+
+  <canvas id="satisfactionChart"></canvas>
+</section>
+      <section class="panel">
         <div class="panel-header">
           <h2>Résultats par question</h2>
           <button id="exportBtn">Exporter CSV</button>
@@ -102,7 +109,7 @@
     </section>
 
   </main>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module" src="admin.js"></script>
 </body>
 </html>
