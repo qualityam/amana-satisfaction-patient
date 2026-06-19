@@ -457,3 +457,48 @@ function escapeHtml(text) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+function renderMonthlyTrend() {
+
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+
+  const currentMonthResponses = allResponses.filter(r => {
+    const d = new Date(r.localSubmittedAt);
+    return d.getMonth() === currentMonth &&
+           d.getFullYear() === currentYear;
+  });
+
+  const previousMonthResponses = allResponses.filter(r => {
+    const d = new Date(r.localSubmittedAt);
+
+    const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+    return d.getMonth() === prevMonth &&
+           d.getFullYear() === prevYear;
+  });
+
+  const currentCount = currentMonthResponses.length;
+  const previousCount = previousMonthResponses.length;
+
+  const trendElement = document.getElementById("monthlyTrend");
+  const textElement = document.getElementById("monthlyTrendText");
+
+  if (!trendElement || !textElement) return;
+
+  if (previousCount === 0) {
+    trendElement.textContent = currentCount;
+    textElement.textContent = "Premier mois de suivi";
+    return;
+  }
+
+  const evolution = Math.round(
+    ((currentCount - previousCount) / previousCount) * 100
+  );
+
+  trendElement.textContent =
+    evolution >= 0 ? `↗ +${evolution}%` : `↘ ${evolution}%`;
+
+  textElement.textContent =
+    `${currentCount} réponses vs ${previousCount} le mois précédent`;
+}
