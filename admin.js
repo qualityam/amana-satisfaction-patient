@@ -509,7 +509,7 @@ doc.setFillColor(8, 47, 115);
 doc.rect(0, 0, 210, 35, "F");
 
 try {
-  doc.addImage(logo, "PNG", 15, 6, 38, 22);
+  doc.addImage(logo, "PNG", 10, 4, 55, 28);
 } catch (e) {
   console.warn("Logo non chargé", e);
 }
