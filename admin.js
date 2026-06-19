@@ -19,6 +19,7 @@ const questionsLabels = {
 let allResponses = [];
 let filteredResponses = [];
 let satisfactionChart = null;
+let monthlyChart = null;
 const loginBox = document.getElementById("loginBox");
 const dashboard = document.getElementById("dashboard");
 const loginError = document.getElementById("loginError");
@@ -116,9 +117,75 @@ function renderStats() {
 renderBestAndWeakPoints(questionStats);
 renderQuestionBars(questionStats);
 renderChart(questionStats);
+renderMonthlyChart();
   renderComments();
 }
+function renderMonthlyChart() {
 
+  const canvas = document.getElementById("monthlyChart");
+
+  if (!canvas) return;
+
+  const monthlyData = {};
+
+  filteredResponses.forEach(response => {
+
+    if (!response.localSubmittedAt) return;
+
+    const date = new Date(response.localSubmittedAt);
+
+    const month = date.toLocaleDateString("fr-FR", {
+      month: "short",
+      year: "numeric"
+    });
+
+    if (!monthlyData[month]) {
+      monthlyData[month] = {
+        total: 0,
+        count: 0
+      };
+    }
+
+    monthlyData[month].total += Number(response.satisfactionPercent || 0);
+    monthlyData[month].count += 1;
+  });
+
+  const labels = Object.keys(monthlyData);
+
+  const values = labels.map(month =>
+    Math.round(
+      monthlyData[month].total /
+      monthlyData[month].count
+    )
+  );
+
+  if (monthlyChart) {
+    monthlyChart.destroy();
+  }
+
+  monthlyChart = new Chart(canvas, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "Satisfaction moyenne (%)",
+        data: values,
+        tension: 0.3,
+        fill: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          min: 0,
+          max: 100
+        }
+      }
+    }
+  });
+}
 function renderQualityIndicator(percent) {
   const indicator = document.getElementById("qualityIndicator");
   const status = document.getElementById("qualityStatus");
