@@ -611,7 +611,7 @@ if (chartCanvas) {
     );
   }
 doc.addPage();
-y = 20;
+let y = 20;
 
 doc.setFontSize(14);
 doc.text("Conclusion", 20, y);
