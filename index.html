@@ -1,4 +1,28 @@
 <!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"><title>Enquête satisfaction patient - AMANA</title><link rel="stylesheet" href="style.css"></head><body><main class="app">
 <section id="welcomeScreen" class="screen active"><div class="welcome-card"><aside class="welcome-left"><div class="logo-card"><img src="assets/logo-amana.png" alt="Laboratoire AMANA"></div><div class="features"><div><span>🛡️</span><p>Qualité<br>et fiabilité</p></div><div><span>🔬</span><p>Expertise<br>et précision</p></div><div><span>🤝</span><p>Engagement<br>et confiance</p></div></div></aside><section class="welcome-content"><p class="lab-name">Laboratoire AMANA de Pathologie</p><h1 class="ar">استبيان رضا المرضى – مختبر أمانة</h1><h2>Enquête de satisfaction patient – Laboratoire AMANA</h2><div class="intro-box"><p class="ar">نشكركم على تخصيص بضع دقائق للإجابة عن هذا الاستبيان. آراؤكم تساعدنا على تحسين جودة خدماتنا وتقديم رعاية أفضل لكم 🌷</p><p>Nous vous remercions de consacrer quelques minutes à répondre à cette enquête. Vos avis nous aident à améliorer la qualité de nos services et à vous offrir une meilleure prise en charge 🌷</p></div><button id="startBtn" class="primary-btn"><span>Commencer</span><span class="separator"></span><span class="ar">ابدأ</span><span class="arrow">➜</span></button><p class="privacy">🔒 Vos réponses sont 100% anonymes et confidentielles. <span class="ar">إجاباتكم سرية ومجهولة تماماً.</span></p></section></div></section>
 <section id="questionScreen" class="screen"><div class="survey-card"><header class="survey-header"><img src="assets/logo-amana.png" class="header-logo" alt="AMANA"><div class="progress-zone"><p id="progressText">Question 1 / 6</p><div class="progress-bar"><div id="progressFill"></div></div><p id="progressTextAr" class="ar">سؤال 1 / 6</p></div></header><section class="question-zone"><div class="question-icon">?</div><h1 id="questionAr" class="ar"></h1><div class="red-line"></div><h2 id="questionFr"></h2></section><section class="emoji-grid"><button class="emoji-option very-satisfied" data-score="5"><span class="emoji">🤩</span><span class="label-ar ar">راضٍ جداً</span><span class="label-fr">Très satisfait</span></button><button class="emoji-option satisfied" data-score="4"><span class="emoji">🙂</span><span class="label-ar ar">راضٍ</span><span class="label-fr">Satisfait</span></button><button class="emoji-option medium" data-score="3"><span class="emoji">😐</span><span class="label-ar ar">متوسط</span><span class="label-fr">Moyen</span></button><button class="emoji-option unsatisfied" data-score="2"><span class="emoji">🙁</span><span class="label-ar ar">غير راضٍ</span><span class="label-fr">Insatisfait</span></button><button class="emoji-option very-unsatisfied" data-score="1"><span class="emoji">😡</span><span class="label-ar ar">غير راضٍ جداً</span><span class="label-fr">Très insatisfait</span></button></section><section class="instruction"><p class="ar">اضغط على الوجه الذي يعبر عن رأيك للانتقال إلى السؤال التالي</p><p>Cliquez sur le visage qui correspond à votre opinion pour passer à la question suivante</p></section><footer class="survey-footer">🔒 Vos réponses sont 100% anonymes et confidentielles. <span class="ar">إجاباتكم سرية ومجهولة تماماً.</span></footer></div></section>
-<section id="thankScreen" class="screen"><div class="thank-card"><img src="assets/logo-amana.png" class="thank-logo" alt="AMANA"><div class="check">✓</div><h1 class="ar">شكراً لمساهمتكم</h1><h2>Merci pour votre participation</h2><p class="ar">رأيكم يساعدنا على تحسين خدماتنا باستمرار 🌷</p><p>Votre avis nous aide à améliorer continuellement nos services. 🌷</p><small>Retour à la page d'accueil dans quelques secondes...</small></div></section><div id="statusMessage" class="status-message hidden"></div></main><script type="module" src="app.js"></script></body></html>
+<section id="commentScreen" class="screen">
+  <div class="thank-card comment-card">
+    <img src="assets/logo-amana.png" class="thank-logo" alt="AMANA">
+
+    <h1 class="ar">هل لديكم أي ملاحظة أو اقتراح؟</h1>
+    <h2>Avez-vous une remarque ou une suggestion ?</h2>
+
+    <textarea id="patientComment" maxlength="500" placeholder="Votre remarque ou suggestion... / ملاحظتكم أو اقتراحكم"></textarea>
+
+    <div class="comment-actions">
+      <button id="skipCommentBtn" class="secondary-comment-btn">
+        Ignorer / تخطي
+      </button>
+
+      <button id="submitCommentBtn" class="primary-comment-btn">
+        Valider / تأكيد
+      </button>
+    </div>
+
+    <p class="privacy">
+      Ce champ est facultatif. <span class="ar">هذا الحقل اختياري.</span>
+    </p>
+  </div>
+</section>
+  <section id="thankScreen" class="screen"><div class="thank-card"><img src="assets/logo-amana.png" class="thank-logo" alt="AMANA"><div class="check">✓</div><h1 class="ar">شكراً لمساهمتكم</h1><h2>Merci pour votre participation</h2><p class="ar">رأيكم يساعدنا على تحسين خدماتنا باستمرار 🌷</p><p>Votre avis nous aide à améliorer continuellement nos services. 🌷</p><small>Retour à la page d'accueil dans quelques secondes...</small></div></section><div id="statusMessage" class="status-message hidden"></div></main><script type="module" src="app.js"></script></body></html>
