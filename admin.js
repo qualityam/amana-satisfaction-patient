@@ -135,6 +135,7 @@ renderDistributionChart();
 renderMonthlyChart();
 renderComments();
 renderMonthlyTrend();
+renderPositiveHighlights();
 }
 function renderMonthlyChart() {
 
@@ -457,6 +458,50 @@ function escapeHtml(text) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+function renderPositiveHighlights() {
+
+  const container = document.getElementById("positiveHighlights");
+
+  if (!container) return;
+
+  const comments = filteredResponses
+    .filter(r => r.comment && r.comment.trim() !== "")
+    .map(r => r.comment.toLowerCase());
+
+  if (!comments.length) {
+    container.innerHTML = "<p>Aucun commentaire disponible.</p>";
+    return;
+  }
+
+  const keywords = {
+    accueil: "✓ Bon accueil",
+    aimable: "✓ Personnel aimable",
+    sympathique: "✓ Personnel sympathique",
+    rapide: "✓ Rapidité des résultats",
+    professionnel: "✓ Professionnalisme",
+    propre: "✓ Propreté du laboratoire",
+    satisfait: "✓ Satisfaction générale élevée"
+  };
+
+  const highlights = [];
+
+  Object.entries(keywords).forEach(([word, label]) => {
+    if (comments.some(comment => comment.includes(word))) {
+      highlights.push(label);
+    }
+  });
+
+  if (!highlights.length) {
+    container.innerHTML =
+      "<p>Pas assez de commentaires pour identifier des tendances.</p>";
+    return;
+  }
+
+  container.innerHTML =
+    "<ul>" +
+    highlights.map(item => `<li>${item}</li>`).join("") +
+    "</ul>";
 }
 function renderMonthlyTrend() {
 
