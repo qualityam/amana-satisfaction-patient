@@ -116,6 +116,7 @@ function renderStats() {
 renderBestAndWeakPoints(questionStats);
 renderQuestionBars(questionStats);
 renderChart(questionStats);
+  renderComments();
 }
 
 function renderQualityIndicator(percent) {
@@ -278,4 +279,47 @@ function renderChart(stats) {
       }
     }
   });
+}
+function renderComments() {
+  const comments = filteredResponses
+    .filter(response => response.comment && response.comment.trim() !== "")
+    .slice(0, 10);
+
+  const commentCount = document.getElementById("commentCount");
+  const commentsList = document.getElementById("commentsList");
+
+  if (!commentCount || !commentsList) return;
+
+  commentCount.textContent = `${comments.length} commentaire${comments.length > 1 ? "s" : ""}`;
+
+  if (!comments.length) {
+    commentsList.innerHTML = "<p>Aucun commentaire pour le moment.</p>";
+    return;
+  }
+
+  commentsList.innerHTML = comments.map(response => {
+    const date = response.localSubmittedAt
+      ? new Date(response.localSubmittedAt).toLocaleDateString("fr-FR")
+      : "Date non disponible";
+
+    const score = response.scoreAverage
+      ? `${response.scoreAverage}/5`
+      : "-";
+
+    return `
+      <article class="comment-item">
+        <p>${escapeHtml(response.comment)}</p>
+        <small>${date} — Score : ${score}</small>
+      </article>
+    `;
+  }).join("");
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
