@@ -92,7 +92,13 @@ function renderStats() {
 
   document.getElementById("globalSatisfaction").textContent = `${globalPercent}%`;
   document.getElementById("averageScore").textContent = `${average.toFixed(2)}/5`;
+const objective = 90;
+const gap = globalPercent - objective;
 
+document.getElementById("qualityGap").textContent =
+  gap >= 0
+    ? `Objectif atteint (+${gap}%)`
+    : `Écart à combler : ${gap}%`;
   renderQualityIndicator(globalPercent);
 
   const questionStats = {};
