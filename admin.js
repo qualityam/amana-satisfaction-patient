@@ -17,7 +17,7 @@ const questionsLabels = {
 };
 
 let allResponses = [];
-
+let filteredResponses = [];
 const loginBox = document.getElementById("loginBox");
 const dashboard = document.getElementById("dashboard");
 const loginError = document.getElementById("loginError");
@@ -25,7 +25,8 @@ const loginError = document.getElementById("loginError");
 document.getElementById("loginBtn").addEventListener("click", login);
 document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
 document.getElementById("exportBtn").addEventListener("click", exportCsv);
-
+document.getElementById("filterBtn").addEventListener("click", applyDateFilter);
+document.getElementById("resetFilterBtn").addEventListener("click", resetDateFilter);
 onAuthStateChanged(auth, async user => {
   if (user) {
     loginBox.classList.add("hidden");
@@ -60,11 +61,12 @@ async function loadDashboard() {
     ...doc.data()
   }));
 
-  renderStats();
+ filteredResponses = allResponses;
+renderStats();
 }
 
 function renderStats() {
-  const total = allResponses.length;
+  const total = filteredResponses.length;
 
   document.getElementById("totalResponses").textContent = total;
 
@@ -82,7 +84,7 @@ function renderStats() {
     return;
   }
 
-  const average = allResponses.reduce((sum, r) => sum + Number(r.scoreAverage || 0), 0) / total;
+  const average = filteredResponses.reduce((sum, r) => sum + Number(r.scoreAverage || 0), 0) / total;
   const globalPercent = Math.round((average / 5) * 100);
 
   document.getElementById("globalSatisfaction").textContent = `${globalPercent}%`;
@@ -93,7 +95,7 @@ function renderStats() {
   const questionStats = {};
 
   Object.keys(questionsLabels).forEach(key => {
-    const scores = allResponses
+    const scores = filteredResponses
       .map(r => Number(r.answers?.[key] || 0))
       .filter(Boolean);
 
@@ -206,4 +208,37 @@ function exportCsv() {
   a.click();
 
   URL.revokeObjectURL(url);
+}
+function applyDateFilter() {
+  const startDate = document.getElementById("startDate").value;
+  const endDate = document.getElementById("endDate").value;
+
+  filteredResponses = allResponses.filter(response => {
+    const responseDate = new Date(response.localSubmittedAt);
+
+    if (startDate && responseDate < new Date(startDate)) {
+      return false;
+    }
+
+    if (endDate) {
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+
+      if (responseDate > end) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
+  renderStats();
+}
+
+function resetDateFilter() {
+  document.getElementById("startDate").value = "";
+  document.getElementById("endDate").value = "";
+
+  filteredResponses = allResponses;
+  renderStats();
 }
