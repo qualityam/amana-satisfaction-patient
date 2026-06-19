@@ -14,7 +14,12 @@ const questions = [
 const source = new URLSearchParams(window.location.search).get("source") || "tablette";
 let currentQuestionIndex = 0;
 let answers = {};
-const screens = { welcome: document.getElementById("welcomeScreen"), question: document.getElementById("questionScreen"), thanks: document.getElementById("thankScreen") };
+const screens = {
+  welcome: document.getElementById("welcomeScreen"),
+  question: document.getElementById("questionScreen"),
+  comment: document.getElementById("commentScreen"),
+  thanks: document.getElementById("thankScreen")
+};
 const questionAr = document.getElementById("questionAr");
 const questionFr = document.getElementById("questionFr");
 const progressText = document.getElementById("progressText");
@@ -23,9 +28,15 @@ const progressFill = document.getElementById("progressFill");
 const statusMessage = document.getElementById("statusMessage");
 document.getElementById("startBtn").addEventListener("click", startSurvey);
 document.querySelectorAll(".emoji-option").forEach(button => button.addEventListener("click", () => selectAnswer(Number(button.dataset.score))));
+document.getElementById("skipCommentBtn").addEventListener("click", () => submitSurvey(""));
+document.getElementById("submitCommentBtn").addEventListener("click", () => {
+  const comment = document.getElementById("patientComment").value.trim();
+  submitSurvey(comment);
+});
 function showScreen(name){ Object.values(screens).forEach(s=>s.classList.remove("active")); screens[name].classList.add("active"); }
 function startSurvey(){ currentQuestionIndex = 0; answers = {}; showQuestion(); }
 function showQuestion(){ const q=questions[currentQuestionIndex]; questionAr.textContent=q.ar; questionFr.textContent=q.fr; const n=currentQuestionIndex+1,t=questions.length; progressText.textContent=`Question ${n} / ${t}`; progressTextAr.textContent=`سؤال ${n} / ${t}`; progressFill.style.width=`${(n/t)*100}%`; showScreen("question"); }
-async function selectAnswer(score){ const q=questions[currentQuestionIndex]; answers[q.id]=score; currentQuestionIndex++; if(currentQuestionIndex<questions.length){ setTimeout(showQuestion,200); return; } await submitSurvey(); }
-async function submitSurvey(){ const values=Object.values(answers); const avg=values.reduce((s,v)=>s+v,0)/values.length; const percent=Math.round((avg/5)*100); const payload={answers,scoreAverage:Number(avg.toFixed(2)),satisfactionPercent:percent,source,questionCount:questions.length,submittedAt:serverTimestamp(),localSubmittedAt:new Date().toISOString(),appVersion:"1.0.0"}; try{ await addDoc(collection(db,"responses"),payload); showScreen("thanks"); setTimeout(()=>showScreen("welcome"),5000); }catch(e){ console.error(e); showStatus("Erreur d'enregistrement. Vérifiez la connexion internet."); showScreen("welcome"); }}
+async function selectAnswer(score){ const q=questions[currentQuestionIndex]; answers[q.id]=score; currentQuestionIndex++; if(currentQuestionIndex<questions.length){ setTimeout(showQuestion,200); return; } document.getElementById("patientComment").value = "";
+showScreen("comment"); }
+async function submitSurvey(comment = ""){ const values=Object.values(answers); const avg=values.reduce((s,v)=>s+v,0)/values.length; const percent=Math.round((avg/5)*100); const payload={answers,comment: comment,scoreAverage:Number(avg.toFixed(2)),satisfactionPercent:percent,source,questionCount:questions.length,submittedAt:serverTimestamp(),localSubmittedAt:new Date().toISOString(),appVersion:"1.0.0"}; try{ await addDoc(collection(db,"responses"),payload); showScreen("thanks"); setTimeout(()=>showScreen("welcome"),5000); }catch(e){ console.error(e); showStatus("Erreur d'enregistrement. Vérifiez la connexion internet."); showScreen("welcome"); }}
 function showStatus(message){ statusMessage.textContent=message; statusMessage.classList.remove("hidden"); setTimeout(()=>statusMessage.classList.add("hidden"),5000); }
