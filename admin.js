@@ -615,6 +615,44 @@ doc.setFontSize(11);
 
 const lines = doc.splitTextToSize(conclusion, 170);
 doc.text(lines, 20, y + 10);
+  y += 60;
+
+doc.setFontSize(14);
+doc.text("Plan d'action recommande", 20, y);
+
+y += 10;
+
+let action = "";
+
+if (weakQuestion.includes("Accueil")) {
+  action =
+    "- Sensibilisation du personnel d'accueil\n" +
+    "- Analyse des reclamations liees a l'accueil\n" +
+    "- Evaluation de l'efficacite lors du prochain suivi";
+}
+else if (weakQuestion.includes("attente")) {
+  action =
+    "- Analyse des causes de retard\n" +
+    "- Optimisation du flux patient\n" +
+    "- Suivi mensuel du temps d'attente";
+}
+else if (weakQuestion.includes("resultats")) {
+  action =
+    "- Analyse des retards de rendu\n" +
+    "- Renforcement du suivi des delais\n" +
+    "- Evaluation lors de la prochaine revue";
+}
+else {
+  action =
+    "- Analyse des causes\n" +
+    "- Mise en place d'actions correctives\n" +
+    "- Verification de l'efficacite";
+}
+
+doc.setFontSize(11);
+
+const actionLines = doc.splitTextToSize(action, 170);
+doc.text(actionLines, 20, y + 10);
   doc.save(
     `Rapport_Qualite_AMANA_${new Date().toISOString().slice(0,10)}.pdf`
   );
