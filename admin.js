@@ -461,7 +461,7 @@ function escapeHtml(text) {
     .replaceAll("'", "&#039;");
 }
 async function generatePdfReport() {
-
+console.log("Début PDF");
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 const logo = new Image();
@@ -678,9 +678,12 @@ doc.setFontSize(11);
 
 const actionLines = doc.splitTextToSize(action, 170);
 doc.text(actionLines, 20, y + 10);
-  doc.save(
-    `Rapport_Qualite_AMANA_${new Date().toISOString().slice(0,10)}.pdf`
-  );
+
+console.log("Avant save");
+
+doc.save(
+  `Rapport_Qualite_AMANA_${new Date().toISOString().slice(0,10)}.pdf`
+);
 }
 function renderPositiveHighlights() {
 
