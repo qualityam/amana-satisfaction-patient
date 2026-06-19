@@ -72,3 +72,7 @@
   color: #657085;
   font-weight: 700;
 }
+.monthly-chart-container{
+    height:300px;
+    position:relative;
+}
