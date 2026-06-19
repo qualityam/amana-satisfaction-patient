@@ -134,6 +134,7 @@ renderChart(questionStats);
 renderDistributionChart();
 renderMonthlyChart();
 renderComments();
+renderMonthlyTrend();
 }
 function renderMonthlyChart() {
 
