@@ -504,43 +504,71 @@ qualityIndicator = qualityIndicator
   const qualityGap =
     document.getElementById("qualityGap").textContent;
 
-  let y = 45;
+  // Design page 1
+doc.setFillColor(8, 47, 115);
+doc.rect(0, 0, 210, 35, "F");
 
-  doc.setFontSize(18);
-  doc.text("RAPPORT QUALITE", 75, 20);
+try {
+  doc.addImage(logo, "PNG", 15, 6, 38, 22);
+} catch (e) {
+  console.warn("Logo non chargé", e);
+}
+
+doc.setTextColor(255, 255, 255);
+doc.setFontSize(18);
+doc.text("RAPPORT QUALITÉ", 65, 15);
+
+doc.setFontSize(11);
+doc.text("Enquête de satisfaction patient", 65, 23);
+
+doc.setTextColor(8, 47, 115);
 doc.setFontSize(12);
-doc.text("Laboratoire AMANA de Pathologie", 75, 28);
+doc.text("Laboratoire AMANA de Pathologie", 20, 48);
 
-  y += 15;
+doc.setTextColor(90, 102, 128);
+doc.setFontSize(10);
+doc.text(`Date d'édition : ${new Date().toLocaleDateString("fr-FR")}`, 20, 56);
 
-  doc.setFontSize(11);
-  doc.text(
-    `Date : ${new Date().toLocaleDateString("fr-FR")}`,
-    20,
-    y
-  );
+// Cartes indicateurs
+function drawCard(x, y, title, value, subtitle = "") {
+  doc.setFillColor(244, 248, 255);
+  doc.roundedRect(x, y, 80, 28, 4, 4, "F");
 
-  y += 15;
+  doc.setTextColor(90, 102, 128);
+  doc.setFontSize(9);
+  doc.text(title, x + 6, y + 8);
 
-  doc.text(`Nombre de réponses : ${totalResponses}`, 20, y);
-  y += 10;
+  doc.setTextColor(8, 47, 115);
+  doc.setFontSize(18);
+  doc.text(value, x + 6, y + 20);
 
-  doc.text(`Satisfaction globale : ${globalSatisfaction}`, 20, y);
-  y += 10;
+  if (subtitle) {
+    doc.setFontSize(8);
+    doc.setTextColor(90, 102, 128);
+    doc.text(subtitle, x + 6, y + 26);
+  }
+}
 
-  doc.text(`Score moyen : ${averageScore}`, 20, y);
-  y += 10;
+drawCard(20, 68, "Nombre de réponses", totalResponses);
+drawCard(110, 68, "Satisfaction globale", globalSatisfaction);
+drawCard(20, 105, "Score moyen", averageScore);
+drawCard(110, 105, "Objectif qualité", "90%", qualityGap);
 
-  doc.text(`Indicateur qualité : ${qualityIndicator}`, 20, y);
-  y += 10;
+// Synthèse
+doc.setTextColor(8, 47, 115);
+doc.setFontSize(14);
+doc.text("Synthèse qualité", 20, 150);
 
-  doc.text(`Point fort : ${bestQuestion}`, 20, y);
-  y += 10;
+doc.setDrawColor(15, 88, 184);
+doc.line(20, 154, 190, 154);
 
-  doc.text(`Point à améliorer : ${weakQuestion}`, 20, y);
-  y += 10;
+doc.setTextColor(0, 0, 0);
+doc.setFontSize(11);
 
-  doc.text(`${qualityGap}`, 20, y);
+doc.text(`Indicateur qualité : ${qualityIndicator}`, 20, 168);
+doc.text(`Point fort identifié : ${bestQuestion}`, 20, 180);
+doc.text(`Point à améliorer : ${weakQuestion}`, 20, 192);
+doc.text(`${qualityGap}`, 20, 204);
   y += 20;
 
 const chartCanvas = document.getElementById("satisfactionChart");
