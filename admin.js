@@ -20,6 +20,7 @@ let allResponses = [];
 let filteredResponses = [];
 let satisfactionChart = null;
 let monthlyChart = null;
+let distributionChart = null;
 const loginBox = document.getElementById("loginBox");
 const dashboard = document.getElementById("dashboard");
 const loginError = document.getElementById("loginError");
@@ -117,8 +118,9 @@ function renderStats() {
 renderBestAndWeakPoints(questionStats);
 renderQuestionBars(questionStats);
 renderChart(questionStats);
+renderDistributionChart();
 renderMonthlyChart();
-  renderComments();
+renderComments();
 }
 function renderMonthlyChart() {
 
@@ -344,6 +346,49 @@ function renderChart(stats) {
           max: 100
         }
       }
+    }
+  });
+}
+function renderDistributionChart() {
+
+  const canvas = document.getElementById("distributionChart");
+
+  if (!canvas) return;
+
+  const distribution = {
+    "Très satisfait": 0,
+    "Satisfait": 0,
+    "Moyen": 0,
+    "Insatisfait": 0,
+    "Très insatisfait": 0
+  };
+
+  filteredResponses.forEach(response => {
+
+    const score = Math.round(Number(response.scoreAverage || 0));
+
+    if (score === 5) distribution["Très satisfait"]++;
+    else if (score === 4) distribution["Satisfait"]++;
+    else if (score === 3) distribution["Moyen"]++;
+    else if (score === 2) distribution["Insatisfait"]++;
+    else if (score === 1) distribution["Très insatisfait"]++;
+  });
+
+  if (distributionChart) {
+    distributionChart.destroy();
+  }
+
+  distributionChart = new Chart(canvas, {
+    type: "pie",
+    data: {
+      labels: Object.keys(distribution),
+      datasets: [{
+        data: Object.values(distribution)
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
     }
   });
 }
