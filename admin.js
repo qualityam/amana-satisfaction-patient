@@ -510,20 +510,20 @@ doc.rect(0, 0, 210, 35, "F");
 
 // Fond blanc derrière le logo
 doc.setFillColor(255, 255, 255);
-doc.roundedRect(8, 3, 58, 30, 3, 3, "F");
+doc.roundedRect(8, 4, 48, 24, 3, 3, "F");
 
 try {
-  doc.addImage(logo, "PNG", 10, 4, 54, 26);
+  doc.addImage(logo, "PNG", 10, 5, 44, 20);
 } catch (e) {
   console.warn("Logo non chargé", e);
 }
 
 doc.setTextColor(255, 255, 255);
 doc.setFontSize(18);
-doc.text("RAPPORT QUALITÉ", 65, 15);
+doc.text("RAPPORT QUALITÉ", 75, 15);
 
 doc.setFontSize(11);
-doc.text("Enquête de satisfaction patient", 65, 23);
+doc.text("Enquête de satisfaction patient", 75, 23);
 
 doc.setTextColor(8, 47, 115);
 doc.setFontSize(12);
