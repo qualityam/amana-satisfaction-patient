@@ -99,6 +99,13 @@ document.getElementById("qualityGap").textContent =
   gap >= 0
     ? `Objectif atteint (+${gap}%)`
     : `Écart à combler : ${gap}%`;
+  const gapElement = document.getElementById("qualityGap");
+
+if (gap >= 0) {
+  gapElement.style.color = "#2e9e38";
+} else {
+  gapElement.style.color = "#d71920";
+}
   renderQualityIndicator(globalPercent);
 
   const questionStats = {};
