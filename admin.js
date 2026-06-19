@@ -387,9 +387,18 @@ function renderDistributionChart() {
       }]
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: "right",
+      labels: {
+        boxWidth: 18,
+        padding: 15
+      }
     }
+  }
+}
   });
 }
 function renderComments() {
