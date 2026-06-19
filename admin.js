@@ -569,7 +569,6 @@ doc.text(`Indicateur qualité : ${qualityIndicator}`, 20, 168);
 doc.text(`Point fort identifié : ${bestQuestion}`, 20, 180);
 doc.text(`Point à améliorer : ${weakQuestion}`, 20, 192);
 doc.text(`${qualityGap}`, 20, 204);
-  y += 20;
 
 const chartCanvas = document.getElementById("satisfactionChart");
 
