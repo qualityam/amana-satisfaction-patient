@@ -28,6 +28,7 @@ const loginError = document.getElementById("loginError");
 document.getElementById("loginBtn").addEventListener("click", login);
 document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
 document.getElementById("exportBtn").addEventListener("click", exportCsv);
+document.getElementById("reportBtn").addEventListener("click", generatePdfReport);
 document.getElementById("filterBtn").addEventListener("click", applyDateFilter);
 document.getElementById("resetFilterBtn").addEventListener("click", resetDateFilter);
 onAuthStateChanged(auth, async user => {
@@ -458,6 +459,72 @@ function escapeHtml(text) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+async function generatePdfReport() {
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const totalResponses =
+    document.getElementById("totalResponses").textContent;
+
+  const globalSatisfaction =
+    document.getElementById("globalSatisfaction").textContent;
+
+  const averageScore =
+    document.getElementById("averageScore").textContent;
+
+  const qualityIndicator =
+    document.getElementById("qualityIndicator").textContent;
+
+  const bestQuestion =
+    document.getElementById("bestQuestion").textContent;
+
+  const weakQuestion =
+    document.getElementById("weakQuestion").textContent;
+
+  const qualityGap =
+    document.getElementById("qualityGap").textContent;
+
+  let y = 20;
+
+  doc.setFontSize(18);
+  doc.text("RAPPORT QUALITE - LABORATOIRE AMANA", 20, y);
+
+  y += 15;
+
+  doc.setFontSize(11);
+  doc.text(
+    `Date : ${new Date().toLocaleDateString("fr-FR")}`,
+    20,
+    y
+  );
+
+  y += 15;
+
+  doc.text(`Nombre de réponses : ${totalResponses}`, 20, y);
+  y += 10;
+
+  doc.text(`Satisfaction globale : ${globalSatisfaction}`, 20, y);
+  y += 10;
+
+  doc.text(`Score moyen : ${averageScore}`, 20, y);
+  y += 10;
+
+  doc.text(`Indicateur qualité : ${qualityIndicator}`, 20, y);
+  y += 10;
+
+  doc.text(`Point fort : ${bestQuestion}`, 20, y);
+  y += 10;
+
+  doc.text(`Point à améliorer : ${weakQuestion}`, 20, y);
+  y += 10;
+
+  doc.text(`${qualityGap}`, 20, y);
+
+  doc.save(
+    `Rapport_Qualite_AMANA_${new Date().toISOString().slice(0,10)}.pdf`
+  );
 }
 function renderPositiveHighlights() {
 
