@@ -464,7 +464,19 @@ async function generatePdfReport() {
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
+const logo = new Image();
+logo.src = "assets/logo-amana.png";
 
+await new Promise(resolve => {
+  logo.onload = resolve;
+  logo.onerror = resolve;
+});
+
+try {
+  doc.addImage(logo, "PNG", 20, 10, 45, 25);
+} catch (e) {
+  console.warn("Logo non chargé dans le PDF", e);
+}
   const totalResponses =
     document.getElementById("totalResponses").textContent;
 
@@ -492,10 +504,12 @@ qualityIndicator = qualityIndicator
   const qualityGap =
     document.getElementById("qualityGap").textContent;
 
-  let y = 20;
+  let y = 45;
 
   doc.setFontSize(18);
-  doc.text("RAPPORT QUALITE - LABORATOIRE AMANA", 20, y);
+  doc.text("RAPPORT QUALITE", 75, 20);
+doc.setFontSize(12);
+doc.text("Laboratoire AMANA de Pathologie", 75, 28);
 
   y += 15;
 
