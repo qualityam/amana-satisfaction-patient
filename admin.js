@@ -267,32 +267,73 @@ function renderQuestionBars(stats) {
 function exportCsv() {
   if (!allResponses.length) return;
 
+  function scoreToText(score) {
+    const value = Number(score);
+
+    if (value === 5) return "Très satisfait";
+    if (value === 4) return "Satisfait";
+    if (value === 3) return "Moyen";
+    if (value === 2) return "Insatisfait";
+    if (value === 1) return "Très insatisfait";
+
+    return "";
+  }
+
+  function formatDate(dateValue) {
+    if (!dateValue) return "";
+
+    const date = new Date(dateValue);
+
+    if (isNaN(date.getTime())) return dateValue;
+
+    return date.toLocaleDateString("fr-FR");
+  }
+
   const header = [
-    "date",
-    "source",
-    "scoreAverage",
-    "satisfactionPercent",
-    ...Object.keys(questionsLabels)
+    "Date",
+    "Source",
+    "Accueil lors de la visite",
+    "Accueil téléphonique",
+    "Temps d'attente",
+    "Confort et propreté",
+    "Délai de remise des résultats",
+    "Satisfaction globale",
+    "Score moyen /5",
+    "Satisfaction %",
+    "Commentaire"
   ];
 
   const rows = allResponses.map(r => [
-    r.localSubmittedAt || "",
+    formatDate(r.localSubmittedAt),
     r.source || "",
+    scoreToText(r.answers?.accueil_visite),
+    scoreToText(r.answers?.accueil_telephonique),
+    scoreToText(r.answers?.temps_attente),
+    scoreToText(r.answers?.confort_proprete),
+    scoreToText(r.answers?.delai_resultats),
+    scoreToText(r.answers?.satisfaction_globale),
     r.scoreAverage || "",
-    r.satisfactionPercent || "",
-    ...Object.keys(questionsLabels).map(key => r.answers?.[key] ?? "")
+    r.satisfactionPercent ? `${r.satisfactionPercent}%` : "",
+    r.comment || ""
   ]);
 
   const csv = [header, ...rows]
-    .map(row => row.map(value => `"${String(value).replace(/"/g, '""')}"`).join(","))
+    .map(row =>
+      row
+        .map(value => `"${String(value).replace(/"/g, '""')}"`)
+        .join(";")
+    )
     .join("\n");
 
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const blob = new Blob(["\uFEFF" + csv], {
+    type: "text/csv;charset=utf-8"
+  });
+
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
 
   a.href = url;
-  a.download = `satisfaction-amana-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download = `export-satisfaction-amana-${new Date().toISOString().slice(0, 10)}.csv`;
   a.click();
 
   URL.revokeObjectURL(url);
