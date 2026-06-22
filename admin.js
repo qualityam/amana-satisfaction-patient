@@ -835,20 +835,81 @@ function exportExcel() {
 
   const wb = XLSX.utils.book_new();
 
-  const synthese = [
-    ["LABORATOIRE AMANA DE PATHOLOGIE"],
-    ["ENQUÊTE DE SATISFACTION PATIENT"],
-    [""],
-    ["Indicateur", "Valeur"],
-    ["Nombre de réponses", allResponses.length],
-    ["Dernière réponse reçue", allResponses[0]?.localSubmittedAt ? new Date(allResponses[0].localSubmittedAt).toLocaleDateString("fr-FR") : ""]
-  ];
+ const total = allResponses.length;
 
-  const wsSynthese = XLSX.utils.aoa_to_sheet(synthese);
-  wsSynthese["!cols"] = [
-    { wch: 40 },
-    { wch: 25 }
+const average =
+  allResponses.reduce((sum, r) => sum + Number(r.scoreAverage || 0), 0) / total;
+
+const satisfaction = Math.round((average / 5) * 100);
+const gap = satisfaction - 90;
+
+const latest = allResponses[0];
+
+const questionStats = Object.keys(questionsLabels).map(key => {
+  const scores = allResponses
+    .map(r => Number(r.answers?.[key] || 0))
+    .filter(Boolean);
+
+  const avg = scores.length
+    ? scores.reduce((a, b) => a + b, 0) / scores.length
+    : 0;
+
+  return [
+    questionsLabels[key],
+    Math.round((avg / 5) * 100),
+    Number(avg.toFixed(2))
   ];
+});
+
+const best = questionStats.reduce((a, b) => a[1] >= b[1] ? a : b);
+const weak = questionStats.reduce((a, b) => a[1] <= b[1] ? a : b);
+
+const synthese = [
+  ["LABORATOIRE AMANA DE PATHOLOGIE"],
+  ["ENQUÊTE DE SATISFACTION PATIENT"],
+  ["SYNTHÈSE QUALITÉ"],
+  [""],
+
+  ["INDICATEURS PRINCIPAUX", ""],
+  ["Nombre de réponses", total],
+  ["Satisfaction globale", `${satisfaction}%`],
+  ["Score moyen", `${average.toFixed(2)}/5`],
+  ["Objectif qualité", "90%"],
+  ["Écart à l'objectif", gap >= 0 ? `+${gap}%` : `${gap}%`],
+  [""],
+
+  ["ANALYSE QUALITÉ", ""],
+  ["Indicateur qualité", satisfaction >= 90 ? "Conforme" : satisfaction >= 80 ? "À surveiller" : "Action requise"],
+  ["Point fort identifié", best[0]],
+  ["Point à améliorer", weak[0]],
+  [""],
+
+  ["DERNIÈRE RÉPONSE REÇUE", ""],
+  ["Date", latest?.localSubmittedAt ? new Date(latest.localSubmittedAt).toLocaleDateString("fr-FR") : ""],
+  ["Source", latest?.source || ""],
+  ["Score", latest?.scoreAverage ? `${latest.scoreAverage}/5` : ""],
+  ["Satisfaction", latest?.satisfactionPercent ? `${latest.satisfactionPercent}%` : ""],
+  ["Commentaire", latest?.comment || ""],
+  [""],
+
+  ["DONNÉES POUR GRAPHIQUE", "", ""],
+  ["Question", "Satisfaction %", "Score /5"],
+  ...questionStats
+];
+
+const wsSynthese = XLSX.utils.aoa_to_sheet(synthese);
+
+wsSynthese["!cols"] = [
+  { wch: 42 },
+  { wch: 25 },
+  { wch: 15 }
+];
+
+wsSynthese["!merges"] = [
+  { s: { r: 0, c: 0 }, e: { r: 0, c: 2 } },
+  { s: { r: 1, c: 0 }, e: { r: 1, c: 2 } },
+  { s: { r: 2, c: 0 }, e: { r: 2, c: 2 } }
+];
 
 const responses = allResponses.map(r => ({
   "Date": r.localSubmittedAt ? new Date(r.localSubmittedAt).toLocaleDateString("fr-FR") : "",
