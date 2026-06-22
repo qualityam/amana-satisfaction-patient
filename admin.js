@@ -27,7 +27,7 @@ const loginError = document.getElementById("loginError");
 
 document.getElementById("loginBtn").addEventListener("click", login);
 document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
-document.getElementById("exportBtn").addEventListener("click", exportCsv);
+document.getElementById("exportBtn").addEventListener("click", exportExcel);
 document.getElementById("reportBtn").addEventListener("click", generatePdfReport);
 document.getElementById("filterBtn").addEventListener("click", applyDateFilter);
 document.getElementById("resetFilterBtn").addEventListener("click", resetDateFilter);
