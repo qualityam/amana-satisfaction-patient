@@ -773,8 +773,8 @@ function renderPositiveHighlights() {
     highlights.map(item => `<li>${item}</li>`).join("") +
     "</ul>";
 }
-function renderMonthlyTrend() {
 
+function renderMonthlyTrend() {
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
 
@@ -819,60 +819,4 @@ function renderMonthlyTrend() {
     `${currentCount} réponses vs ${previousCount} le mois précédent`;
 }
 
-  function formatDate(dateValue) {
-    if (!dateValue) return "";
-
-    const date = new Date(dateValue);
-
-    if (isNaN(date.getTime())) return dateValue;
-
-    return date.toLocaleDateString("fr-FR");
-  }
-
-  const rows = allResponses.map(r => ({
-    "Date": formatDate(r.localSubmittedAt),
-    "Source": r.source || "",
-    "Accueil lors de la visite": scoreToText(r.answers?.accueil_visite),
-    "Accueil téléphonique": scoreToText(r.answers?.accueil_telephonique),
-    "Temps d'attente": scoreToText(r.answers?.temps_attente),
-    "Confort et propreté": scoreToText(r.answers?.confort_proprete),
-    "Délai de remise des résultats": scoreToText(r.answers?.delai_resultats),
-    "Satisfaction globale": scoreToText(r.answers?.satisfaction_globale),
-    "Score moyen /5": r.scoreAverage || "",
-    "Satisfaction %": r.satisfactionPercent ? `${r.satisfactionPercent}%` : "",
-    "Commentaire": r.comment || ""
-  }));
-
-  const worksheet = XLSX.utils.json_to_sheet(rows);
-
-  worksheet["!cols"] = [
-    { wch: 14 },
-    { wch: 14 },
-    { wch: 28 },
-    { wch: 25 },
-    { wch: 22 },
-    { wch: 24 },
-    { wch: 30 },
-    { wch: 24 },
-    { wch: 16 },
-    { wch: 16 },
-    { wch: 40 }
-  ];
-
-  worksheet["!autofilter"] = {
-    ref: worksheet["!ref"]
-  };
-
-  const workbook = XLSX.utils.book_new();
-
-  XLSX.utils.book_append_sheet(
-    workbook,
-    worksheet,
-    "Réponses patients"
-  );
-
-  XLSX.writeFile(
-    workbook,
-    `Export_Satisfaction_AMANA_${new Date().toISOString().slice(0, 10)}.xlsx`
-  );
-}
+ 
