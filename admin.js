@@ -364,7 +364,6 @@ function exportCsv() {
     wb,
     `Export_Satisfaction_AMANA_${new Date().toISOString().slice(0, 10)}.xlsx`
   );
-}
 
   function formatDate(dateValue) {
     if (!dateValue) return "";
