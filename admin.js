@@ -823,16 +823,144 @@ function exportExcel() {
 
   function scoreToText(score) {
     const value = Number(score);
-
     if (value === 5) return "Très satisfait";
     if (value === 4) return "Satisfait";
     if (value === 3) return "Moyen";
     if (value === 2) return "Insatisfait";
     if (value === 1) return "Très insatisfait";
-
     return "";
   }
 
+  function formatDate(dateValue) {
+    if (!dateValue) return "";
+    const date = new Date(dateValue);
+    if (isNaN(date.getTime())) return dateValue;
+    return date.toLocaleDateString("fr-FR");
+  }
+
+  const total = allResponses.length;
+  const average = allResponses.reduce((sum, r) => sum + Number(r.scoreAverage || 0), 0) / total;
+  const satisfaction = Math.round((average / 5) * 100);
+  const gap = satisfaction - 90;
+
+  const latest = allResponses[0];
+
+  const questionStats = Object.keys(questionsLabels).map(key => {
+    const scores = allResponses
+      .map(r => Number(r.answers?.[key] || 0))
+      .filter(Boolean);
+
+    const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+
+    return {
+      question: questionsLabels[key],
+      percent: Math.round((avg / 5) * 100),
+      score: Number(avg.toFixed(2))
+    };
+  });
+
+  const best = questionStats.reduce((a, b) => a.percent >= b.percent ? a : b);
+  const weak = questionStats.reduce((a, b) => a.percent <= b.percent ? a : b);
+
+  const responsesRows = allResponses.map(r => ({
+    "Date": formatDate(r.localSubmittedAt),
+    "Source": r.source || "",
+    "Accueil lors de la visite": scoreToText(r.answers?.accueil_visite),
+    "Accueil téléphonique": scoreToText(r.answers?.accueil_telephonique),
+    "Temps d'attente": scoreToText(r.answers?.temps_attente),
+    "Confort et propreté": scoreToText(r.answers?.confort_proprete),
+    "Délai de remise des résultats": scoreToText(r.answers?.delai_resultats),
+    "Satisfaction globale": scoreToText(r.answers?.satisfaction_globale),
+    "Score moyen /5": r.scoreAverage || "",
+    "Satisfaction %": r.satisfactionPercent ? `${r.satisfactionPercent}%` : "",
+    "Commentaire": r.comment || ""
+  }));
+
+  const synthesisData = [
+    ["LABORATOIRE AMANA DE PATHOLOGIE"],
+    ["ENQUÊTE DE SATISFACTION PATIENT"],
+    [""],
+    ["Indicateur", "Valeur"],
+    ["Nombre de réponses", total],
+    ["Satisfaction globale", `${satisfaction}%`],
+    ["Score moyen", `${average.toFixed(2)}/5`],
+    ["Objectif qualité", "90%"],
+    ["Écart", gap >= 0 ? `+${gap}%` : `${gap}%`],
+    ["Point fort identifié", best.question],
+    ["Point à améliorer", weak.question],
+    [""],
+    ["Dernière réponse reçue", ""],
+    ["Date", formatDate(latest.localSubmittedAt)],
+    ["Source", latest.source || ""],
+    ["Score", latest.scoreAverage ? `${latest.scoreAverage}/5` : ""],
+    ["Satisfaction", latest.satisfactionPercent ? `${latest.satisfactionPercent}%` : ""],
+    ["Commentaire", latest.comment || ""],
+    [""],
+    ["Données pour graphique - Satisfaction par question", ""],
+    ["Question", "Satisfaction %", "Score /5"],
+    ...questionStats.map(item => [item.question, item.percent, item.score])
+  ];
+
+  const wb = XLSX.utils.book_new();
+
+  const wsSynthese = XLSX.utils.aoa_to_sheet(synthesisData);
+  wsSynthese["!cols"] = [{ wch: 42 }, { wch: 25 }, { wch: 15 }];
+  wsSynthese["!merges"] = [
+    { s: { r: 0, c: 0 }, e: { r: 0, c: 2 } },
+    { s: { r: 1, c: 0 }, e: { r: 1, c: 2 } }
+  ];
+
+  const headerStyle = {
+    font: { bold: true, color: { rgb: "FFFFFF" }, sz: 14 },
+    fill: { fgColor: { rgb: "082F73" } },
+    alignment: { horizontal: "center", vertical: "center" }
+  };
+
+  const sectionStyle = {
+    font: { bold: true, color: { rgb: "082F73" } },
+    fill: { fgColor: { rgb: "DCE9F8" } }
+  };
+
+  const tableHeaderStyle = {
+    font: { bold: true, color: { rgb: "FFFFFF" } },
+    fill: { fgColor: { rgb: "0F58B8" } },
+    alignment: { horizontal: "center" }
+  };
+
+  ["A1", "A2"].forEach(cell => {
+    if (wsSynthese[cell]) wsSynthese[cell].s = headerStyle;
+  });
+
+  ["A4", "B4", "A13", "A20", "A21", "B21", "C21"].forEach(cell => {
+    if (wsSynthese[cell]) wsSynthese[cell].s = tableHeaderStyle;
+  });
+
+  ["A5", "A6", "A7", "A8", "A9", "A10", "A11", "A14", "A15", "A16", "A17", "A18"].forEach(cell => {
+    if (wsSynthese[cell]) wsSynthese[cell].s = sectionStyle;
+  });
+
+  const wsResponses = XLSX.utils.json_to_sheet(responsesRows);
+  wsResponses["!cols"] = [
+    { wch: 14 }, { wch: 14 }, { wch: 28 }, { wch: 25 },
+    { wch: 22 }, { wch: 24 }, { wch: 30 }, { wch: 24 },
+    { wch: 16 }, { wch: 16 }, { wch: 40 }
+  ];
+  wsResponses["!autofilter"] = { ref: wsResponses["!ref"] };
+
+  const range = XLSX.utils.decode_range(wsResponses["!ref"]);
+  for (let C = range.s.c; C <= range.e.c; ++C) {
+    const cell = wsResponses[XLSX.utils.encode_cell({ r: 0, c: C })];
+    if (cell) cell.s = tableHeaderStyle;
+  }
+
+  XLSX.utils.book_append_sheet(wb, wsSynthese, "Synthèse qualité");
+  XLSX.utils.book_append_sheet(wb, wsResponses, "Réponses patients");
+
+  XLSX.writeFile(
+    wb,
+    `Export_Satisfaction_AMANA_${new Date().toISOString().slice(0, 10)}.xlsx`
+  );
+}
   function formatDate(dateValue) {
     if (!dateValue) return "";
 
