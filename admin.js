@@ -265,11 +265,8 @@ function renderQuestionBars(stats) {
 }
 
 function exportCsv() {
-  if (!allResponses.length) return;
-
-  if (typeof XLSX === "undefined") {
-    alert("La bibliothèque Excel n'est pas chargée.");
-    return;
+  alert("Test export");
+}
   }
 
   function scoreToText(score) {
