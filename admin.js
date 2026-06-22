@@ -898,11 +898,15 @@ const synthese = [
 ];
 
 const wsSynthese = XLSX.utils.aoa_to_sheet(synthese);
-
+wsSynthese["!merges"] = [
+  { s: { r: 0, c: 0 }, e: { r: 0, c: 2 } },
+  { s: { r: 1, c: 0 }, e: { r: 1, c: 2 } },
+  { s: { r: 2, c: 0 }, e: { r: 2, c: 2 } }
+];
 wsSynthese["!cols"] = [
-  { wch: 42 },
-  { wch: 25 },
-  { wch: 15 }
+  { wch: 45 },
+  { wch: 30 },
+  { wch: 18 }
 ];
 
 wsSynthese["!merges"] = [
