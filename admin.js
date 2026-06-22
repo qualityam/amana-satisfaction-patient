@@ -819,5 +819,7 @@ function renderMonthlyTrend() {
   textElement.textContent =
     `${currentCount} réponses vs ${previousCount} le mois précédent`;
 }
-
+function exportExcel() {
+  alert("Test Excel");
+}
  
