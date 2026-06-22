@@ -27,7 +27,7 @@ const loginError = document.getElementById("loginError");
 
 document.getElementById("loginBtn").addEventListener("click", login);
 document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
-document.getElementById("exportBtn").addEventListener("click", exportCsv);
+document.getElementById("exportBtn").addEventListener("click", exportExcel);
 document.getElementById("reportBtn").addEventListener("click", generatePdfReport);
 document.getElementById("filterBtn").addEventListener("click", applyDateFilter);
 document.getElementById("resetFilterBtn").addEventListener("click", resetDateFilter);
@@ -820,6 +820,30 @@ function renderMonthlyTrend() {
     `${currentCount} réponses vs ${previousCount} le mois précédent`;
 }
 function exportExcel() {
-  alert("Test Excel");
+  if (!allResponses.length) return;
+
+  const wb = XLSX.utils.book_new();
+
+  const synthese = [
+    ["LABORATOIRE AMANA DE PATHOLOGIE"],
+    ["ENQUÊTE DE SATISFACTION PATIENT"],
+    [""],
+    ["Indicateur", "Valeur"],
+    ["Nombre de réponses", allResponses.length],
+    ["Dernière réponse reçue", allResponses[0]?.localSubmittedAt ? new Date(allResponses[0].localSubmittedAt).toLocaleDateString("fr-FR") : ""]
+  ];
+
+  const wsSynthese = XLSX.utils.aoa_to_sheet(synthese);
+  wsSynthese["!cols"] = [
+    { wch: 40 },
+    { wch: 25 }
+  ];
+
+  XLSX.utils.book_append_sheet(wb, wsSynthese, "Synthèse qualité");
+
+  XLSX.writeFile(
+    wb,
+    `Test_Excel_AMANA_${new Date().toISOString().slice(0, 10)}.xlsx`
+  );
 }
  
