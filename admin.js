@@ -819,6 +819,17 @@ function renderMonthlyTrend() {
   textElement.textContent =
     `${currentCount} réponses vs ${previousCount} le mois précédent`;
 }
+function scoreToText(score) {
+  const value = Number(score);
+
+  if (value === 5) return "Très satisfait";
+  if (value === 4) return "Satisfait";
+  if (value === 3) return "Neutre";
+  if (value === 2) return "Insatisfait";
+  if (value === 1) return "Très insatisfait";
+
+  return "";
+}
 function exportExcel() {
   if (!allResponses.length) return;
 
@@ -842,12 +853,12 @@ function exportExcel() {
 const responses = allResponses.map(r => ({
   "Date": r.localSubmittedAt ? new Date(r.localSubmittedAt).toLocaleDateString("fr-FR") : "",
   "Source": r.source || "",
-  "Accueil lors de la visite": r.answers?.accueil_visite || "",
-  "Accueil téléphonique": r.answers?.accueil_telephonique || "",
-  "Temps d'attente": r.answers?.temps_attente || "",
-  "Confort et propreté": r.answers?.confort_proprete || "",
-  "Délai de remise des résultats": r.answers?.delai_resultats || "",
-  "Satisfaction globale": r.answers?.satisfaction_globale || "",
+ "Accueil lors de la visite": scoreToText(r.answers?.accueil_visite),
+"Accueil téléphonique": scoreToText(r.answers?.accueil_telephonique),
+"Temps d'attente": scoreToText(r.answers?.temps_attente),
+"Confort et propreté": scoreToText(r.answers?.confort_proprete),
+"Délai de remise des résultats": scoreToText(r.answers?.delai_resultats),
+"Satisfaction globale": scoreToText(r.answers?.satisfaction_globale),
   "Score moyen /5": r.scoreAverage || "",
   "Satisfaction %": r.satisfactionPercent ? `${r.satisfactionPercent}%` : "",
   "Commentaire": r.comment || ""
