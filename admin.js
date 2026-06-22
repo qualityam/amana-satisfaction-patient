@@ -839,9 +839,34 @@ function exportExcel() {
     { wch: 25 }
   ];
 
-  XLSX.utils.book_append_sheet(wb, wsSynthese, "Synthèse qualité");
+const responses = allResponses.map(r => ({
+  "Date": r.localSubmittedAt ? new Date(r.localSubmittedAt).toLocaleDateString("fr-FR") : "",
+  "Source": r.source || "",
+  "Accueil lors de la visite": r.answers?.accueil_visite || "",
+  "Accueil téléphonique": r.answers?.accueil_telephonique || "",
+  "Temps d'attente": r.answers?.temps_attente || "",
+  "Confort et propreté": r.answers?.confort_proprete || "",
+  "Délai de remise des résultats": r.answers?.delai_resultats || "",
+  "Satisfaction globale": r.answers?.satisfaction_globale || "",
+  "Score moyen /5": r.scoreAverage || "",
+  "Satisfaction %": r.satisfactionPercent ? `${r.satisfactionPercent}%` : "",
+  "Commentaire": r.comment || ""
+}));
 
-  XLSX.writeFile(
+const wsResponses = XLSX.utils.json_to_sheet(responses);
+
+wsResponses["!cols"] = [
+  { wch: 14 }, { wch: 14 }, { wch: 28 }, { wch: 25 },
+  { wch: 22 }, { wch: 24 }, { wch: 30 }, { wch: 24 },
+  { wch: 16 }, { wch: 16 }, { wch: 45 }
+];
+
+wsResponses["!autofilter"] = { ref: wsResponses["!ref"] };
+
+XLSX.utils.book_append_sheet(wb, wsResponses, "Réponses patients");
+XLSX.utils.book_append_sheet(wb, wsSynthese, "Synthèse qualité");
+
+XLSX.writeFile(
     wb,
     `Test_Excel_AMANA_${new Date().toISOString().slice(0, 10)}.xlsx`
   );
