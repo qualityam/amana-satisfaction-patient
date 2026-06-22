@@ -267,7 +267,6 @@ function renderQuestionBars(stats) {
 function exportCsv() {
   alert("Test export");
 }
-  }
 
   function scoreToText(score) {
     const value = Number(score);
