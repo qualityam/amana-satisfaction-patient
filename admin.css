@@ -113,3 +113,121 @@
   font-weight:700;
   color:var(--blue-dark);
 }
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .app {
+    width: 100%;
+    min-height: 100vh;
+    padding: 12px;
+  }
+
+  .screen {
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .welcome-card {
+    width: 100%;
+    max-width: 100%;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 18px;
+    border-radius: 24px;
+  }
+
+  .welcome-left {
+    width: 100%;
+    min-height: auto;
+    padding: 10px;
+  }
+
+  .logo-card {
+    width: 100%;
+    text-align: center;
+  }
+
+  .logo-card img {
+    width: 180px;
+    max-width: 80%;
+    height: auto;
+  }
+
+  .features {
+    display: none;
+  }
+
+  .welcome-content {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .welcome-content h1 {
+    font-size: 28px;
+    line-height: 1.4;
+  }
+
+  .welcome-content h2 {
+    font-size: 24px;
+    line-height: 1.3;
+  }
+
+  .intro-box {
+    font-size: 16px;
+    padding: 16px;
+  }
+
+  .primary-btn {
+    width: 100%;
+    font-size: 18px;
+    padding: 16px;
+  }
+
+  .privacy {
+    font-size: 14px;
+  }
+
+  .survey-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 18px;
+    border-radius: 24px;
+  }
+
+  .survey-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .header-logo {
+    width: 140px;
+  }
+
+  .question-zone h1 {
+    font-size: 28px;
+    line-height: 1.5;
+  }
+
+  .question-zone h2 {
+    font-size: 22px;
+    line-height: 1.4;
+  }
+
+  .emoji-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .emoji-option {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .emoji {
+    font-size: 38px;
+  }
+}
