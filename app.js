@@ -11,7 +11,11 @@ const questions = [
   { id:"delai_resultats", ar:"هل تم تسليم نتائج تحاليلك في الوقت المتفق عليه؟", fr:"Les résultats de vos analyses ont-ils été délivrés dans les délais convenus ?" },
   { id:"satisfaction_globale", ar:"هل أنت راضٍ بشكل عام عن خدمات مختبرنا؟", fr:"Êtes-vous globalement satisfait(e) des services de notre laboratoire ?" }
 ];
-const source = new URLSearchParams(window.location.search).get("source") || "tablette";
+const urlSource = new URLSearchParams(window.location.search).get("source");
+
+const source = urlSource || (
+  window.innerWidth <= 768 ? "mobile" : "tablette"
+);
 let currentQuestionIndex = 0;
 let answers = {};
 const screens = {
