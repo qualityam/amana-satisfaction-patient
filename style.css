@@ -348,4 +348,8 @@
   .label-fr {
     font-size: 16px !important;
   }
+  .survey-card:before,
+.thank-card:after {
+    display: none !important;
+}
 }
