@@ -937,7 +937,7 @@ wsResponses["!autofilter"] = { ref: wsResponses["!ref"] };
 
 XLSX.utils.book_append_sheet(wb, wsResponses, "Réponses patients");
 XLSX.utils.book_append_sheet(wb, wsSynthese, "Synthèse qualité");
-XLSX.utils.book_append_sheet(wb, wsGraphiques, "Données graphiques");
+
 XLSX.writeFile(
     wb,
     `Test_Excel_AMANA_${new Date().toISOString().slice(0, 10)}.xlsx`
