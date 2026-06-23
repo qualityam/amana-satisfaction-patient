@@ -949,4 +949,33 @@ XLSX.writeFile(
     `Test_Excel_AMANA_${new Date().toISOString().slice(0, 10)}.xlsx`
   );
 }
- 
+document
+  .getElementById("forgotPasswordLink")
+  .addEventListener("click", async (e) => {
+
+    e.preventDefault();
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    if (!email) {
+      alert("Veuillez saisir votre adresse email.");
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+
+      alert(
+        "Un email de réinitialisation a été envoyé."
+      );
+
+    } catch (error) {
+
+      alert(
+        "Erreur : " + error.message
+      );
+
+      console.error(error);
+    }
+}); 
