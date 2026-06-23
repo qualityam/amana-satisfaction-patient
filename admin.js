@@ -892,9 +892,16 @@ const synthese = [
   ["Commentaire", latest?.comment || ""],
   [""],
 
-  ["DONNÉES POUR GRAPHIQUE", "", ""],
+[""]
+  const wsGraphiques = XLSX.utils.aoa_to_sheet([
   ["Question", "Satisfaction %", "Score /5"],
   ...questionStats
+]);
+
+wsGraphiques["!cols"] = [
+  { wch: 40 },
+  { wch: 20 },
+  { wch: 15 }
 ];
 
 const wsSynthese = XLSX.utils.aoa_to_sheet(synthese);
@@ -941,7 +948,7 @@ wsResponses["!autofilter"] = { ref: wsResponses["!ref"] };
 
 XLSX.utils.book_append_sheet(wb, wsResponses, "Réponses patients");
 XLSX.utils.book_append_sheet(wb, wsSynthese, "Synthèse qualité");
-
+XLSX.utils.book_append_sheet(wb, wsGraphiques, "Données graphiques");
 XLSX.writeFile(
     wb,
     `Test_Excel_AMANA_${new Date().toISOString().slice(0, 10)}.xlsx`
