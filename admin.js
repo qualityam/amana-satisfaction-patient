@@ -889,10 +889,9 @@ const synthese = [
   ["Source", latest?.source || ""],
   ["Score", latest?.scoreAverage ? `${latest.scoreAverage}/5` : ""],
   ["Satisfaction", latest?.satisfactionPercent ? `${latest.satisfactionPercent}%` : ""],
-  ["Commentaire", latest?.comment || ""],
-  [""],
-
+ ["Commentaire", latest?.comment || ""],
 [""]
+];
 
 const wsSynthese = XLSX.utils.aoa_to_sheet(synthese);
 wsSynthese["!merges"] = [
