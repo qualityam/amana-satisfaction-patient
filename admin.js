@@ -893,16 +893,6 @@ const synthese = [
   [""],
 
 [""]
-  const wsGraphiques = XLSX.utils.aoa_to_sheet([
-  ["Question", "Satisfaction %", "Score /5"],
-  ...questionStats
-]);
-
-wsGraphiques["!cols"] = [
-  { wch: 40 },
-  { wch: 20 },
-  { wch: 15 }
-];
 
 const wsSynthese = XLSX.utils.aoa_to_sheet(synthese);
 wsSynthese["!merges"] = [
