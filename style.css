@@ -352,4 +352,21 @@
 .thank-card:after {
     display: none !important;
 }
+.instruction {
+    margin-bottom: 40px !important;
+}
+
+.instruction p {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+}
+
+.survey-footer {
+    position: relative !important;
+    bottom: auto !important;
+    margin-top: 20px !important;
+    color: var(--blue-dark) !important;
+    font-size: 12px !important;
+    text-align: center !important;
+}
 }
