@@ -48,11 +48,28 @@
   height:400px !important;
 }
 .comments-list {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 14px;
   margin-top: 14px;
+
+  max-height: 300px; /* environ 3 commentaires */
+  overflow-y: auto;
+
+  padding-right: 8px;
+}
+.comments-list::-webkit-scrollbar {
+  width: 8px;
 }
 
+.comments-list::-webkit-scrollbar-thumb {
+  background: #0f58b8;
+  border-radius: 20px;
+}
+
+.comments-list::-webkit-scrollbar-track {
+  background: #e8f0fb;
+}
 .comment-item {
   background: #f7fbff;
   border: 1px solid #dce9f8;
